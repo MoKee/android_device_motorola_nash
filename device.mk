@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Properties
+-include device/motorola/nash/vendor_prop.mk
+
 # AAPT
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := 560dpi
@@ -70,16 +73,16 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_COPY_FILES += \
-    device/motorola/nash/configs/camera/camera_config.xml:/system/etc/camera/camera_config.xml \
-    device/motorola/nash/configs/camera/imx386_chromatix.xml:/system/etc/camera/imx386_chromatix.xml \
-    device/motorola/nash/configs/camera/imx386_mono_chromatix.xml:/system/etc/camera/imx386_mono_chromatix.xml \
-    device/motorola/nash/configs/camera/mot_ov5695_chromatix.xml:/system/etc/camera/mot_ov5695_chromatix.xml
+    device/motorola/nash/configs/camera/camera_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/camera_config.xml \
+    device/motorola/nash/configs/camera/imx386_chromatix.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/imx386_chromatix.xml \
+    device/motorola/nash/configs/camera/imx386_mono_chromatix.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/imx386_mono_chromatix.xml \
+    device/motorola/nash/configs/camera/mot_ov5695_chromatix.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/mot_ov5695_chromatix.xml
 
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     android.hardware.camera.provider@2.4-service \
     camera.device@3.2-impl \
-    libbson \
+    libbson.vendor \
     libxml2 \
     Snap
 
@@ -109,6 +112,7 @@ PRODUCT_PACKAGES += \
     libgenlock \
     liboverlay \
     libqdMetaData.system \
+    libvulkan \
     libtinyxml
 
 # DRM
@@ -172,6 +176,7 @@ PRODUCT_PACKAGES += \
     init.mmi.usb.rc \
     init.mmi.usb.sh \
     init.qcom.rc \
+    init.nash.rc \
     init.power.rc \
     init.qcom.early_boot.sh \
     init.qcom.power.sh \
@@ -205,7 +210,7 @@ PRODUCT_COPY_FILES += \
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/keylayout/Vendor_22b8_Product_ffff.kl:system/usr/keylayout/Vendor_22b8_Product_ffff.kl
+    device/motorola/nash/keylayout/Vendor_22b8_Product_ffff.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Vendor_22b8_Product_ffff.kl
 
 # Keymaster HAL
 PRODUCT_PACKAGES += \
@@ -235,7 +240,7 @@ PRODUCT_COPY_FILES += \
 
 # ModService
 PRODUCT_COPY_FILES += \
-    device/motorola/nash/sysconfig/whitelist_modservice.xml:system/etc/sysconfig/whitelist_modservice.xml
+    device/motorola/nash/configs/whitelist_modservice.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/whitelist_modservice.xml
 
 # Network
 PRODUCT_PACKAGES += \
@@ -298,7 +303,8 @@ PRODUCT_COPY_FILES += \
 
 # QCOM
 PRODUCT_COPY_FILES += \
-    device/motorola/nash/configs/qti_whitelist.xml:system/etc/sysconfig/qti_whitelist.xml
+    device/motorola/nash/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml \
+    device/motorola/nash/configs/qti_whitelist.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/qti_whitelist.xml
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -361,7 +367,7 @@ PRODUCT_PACKAGES += \
 
 # Shims
 PRODUCT_PACKAGES += \
-    libqsap_shim
+    libqsapshim
 
 # Telephony
 PRODUCT_PACKAGES += \
@@ -399,6 +405,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Verity
 PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/platform/soc/1da4000.ufshc/by-name/system
+PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/platform/soc/1da4000.ufshc/by-name/oem
 $(call inherit-product, build/target/product/verity.mk)
 
 # Vibrator
@@ -407,7 +414,13 @@ PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-service
 
 # VNDK
-PRODUCT_PACKAGES += vndk-sp
+# Update this list with what each blob is actually for
+# libicuuc: vendor.qti.hardware.qteeconnector@1.0-impl
+# libstdc++: camera.msm8998
+PRODUCT_PACKAGES += \
+    libicuuc.vendor \
+    libstdc++.vendor \
+    vndk_package
 
 # Weaver
 PRODUCT_PACKAGES += \

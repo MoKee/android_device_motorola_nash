@@ -28,6 +28,7 @@
 #import /vendor/etc/init/hw/init.mmi.ramdump.rc
 import /vendor/etc/init/hw/init.mmi.usb.rc
 import /vendor/etc/init/hw/init.power.rc
+import /vendor/etc/init/hw/init.${ro.boot.device}.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -86,6 +87,8 @@ on init
 on fs
     wait /dev/block/platform/soc/1da4000.ufshc
     symlink /dev/block/platform/soc/1da4000.ufshc /dev/block/bootdevice
+    symlink /dev/block/bootdevice/by-name/oem_b /dev/block/bootdevice/by-name/vendor_b
+    symlink /dev/block/bootdevice/by-name/oem_a /dev/block/bootdevice/by-name/vendor_a
     mount_all /vendor/etc/fstab.qcom --early
 
     restorecon_recursive /persist
@@ -689,7 +692,7 @@ on post-fs-data
 
     # Required by FingerPrint Cards (FPC) via init so we dont need to give qseecomd or fingerprintd permissions to create them
     mkdir /data/fpc 0700 system system
-    mkdir /data/.fps 0770 system fingerp
+    mkdir /data/.fps 0770 system input
 
     #Folder for hardware properties
     mkdir /data/hardware_revisions 0755 system system

@@ -35,6 +35,8 @@ $(shell mkdir -p $(TARGET_OUT_VENDOR)/firmware; \
     ln -sf /dev/block/bootdevice/by-name/msadp \
         $(TARGET_OUT_VENDOR)/firmware/msadp)
 
+$(shell mkdir -p $(TARGET_OUT_VENDOR)/fsg)
+
 MODS_LIBS := libmodhw.so
 MODS_SYMLINKS := $(addprefix $(TARGET_OUT)/priv-app/ModFmwkProxyService/lib/arm64/,$(notdir $(MODS_LIBS)))
 $(MODS_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
@@ -45,13 +47,7 @@ $(MODS_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
 
 ALL_DEFAULT_INSTALLED_MODULES += $(MODS_SYMLINKS)
 
-DSP_SYMLINK := $(TARGET_OUT_VENDOR)/lib/dsp
-$(DSP_SYMLINK): $(LOCAL_INSTALLED_MODULE)
-	@echo "Creating DSP folder symlink: $@"
-	@rm -rf $@
-	$(hide) ln -sf /dsp $@
-
-ALL_DEFAULT_INSTALLED_MODULES += $(DSP_SYMLINK)
+$(shell mkdir -p $(TARGET_OUT_VENDOR)/lib/dsp)
 
 IMS_LIBS := libimscamera_jni.so libimsmedia_jni.so
 IMS_SYMLINKS := $(addprefix $(TARGET_OUT)/app/ims/lib/arm64/,$(notdir $(IMS_LIBS)))
