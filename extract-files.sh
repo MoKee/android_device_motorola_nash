@@ -57,7 +57,7 @@ setup_vendor "$DEVICE" "$VENDOR" "$MK_ROOT" false "$CLEAN_VENDOR"
 
 extract "$MY_DIR"/proprietary-files.txt "$SRC" "$SECTION"
 
-BLOB_ROOT="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary
+BLOB_ROOT="$MK_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary
 
 # Load libSonyDefocus from vendor
 CAMERA_IMX386="$BLOB_ROOT"/vendor/lib/libmmcamera_imx386.so
