@@ -107,7 +107,7 @@ TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
-WITH_LINEAGE_CHARGER := false
+WITH_MOKEE_CHARGER := false
 
 # Display
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
@@ -156,15 +156,15 @@ BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8998
-TARGET_KERNEL_CONFIG := lineageos_nash_defconfig
+TARGET_KERNEL_CONFIG := mokee_nash_defconfig
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_CLANG_COMPILE := true
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
-# Lineage hardware
-JAVA_SOURCE_OVERLAYS := org.lineageos.hardware|$(DEVICE_PATH)/lineagehw|**/*.java
+# MK hardware
+JAVA_SOURCE_OVERLAYS := org.mokee.hardware|$(DEVICE_PATH)/mkhw|**/*.java
 
 # NFC
 BOARD_NFC_CHIPSET := pn553
