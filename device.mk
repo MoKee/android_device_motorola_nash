@@ -14,13 +14,33 @@
 # limitations under the License.
 #
 
-# Properties
+# Vendor Properties
 -include device/motorola/nash/vendor_prop.mk
+
+# Overlays
+DEVICE_PACKAGE_OVERLAYS += device/motorola/nash/overlay
+
+PRODUCT_ENFORCE_RRO_TARGETS := \
+    framework-res
+
+# A/B updater
+AB_OTA_PARTITIONS += \
+    boot \
+    system \
+    vendor
+
+AB_OTA_POSTINSTALL_CONFIG += \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true \
+    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    RUN_POSTINSTALL_system=true
+
+AB_OTA_UPDATER := true
 
 # AAPT
 PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := 560dpi
 PRODUCT_AAPT_PREBUILT_DPI := xxxhdpi xxhdpi xhdpi hdpi
+PRODUCT_AAPT_PREF_CONFIG := 560dpi
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -48,8 +68,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/nash/audio/audio_ext_spkr.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_ext_spkr.conf \
     device/motorola/nash/audio/audio_platform_info.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_platform_info.xml \
     device/motorola/nash/audio/mixer_paths.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths.xml \
-
-PRODUCT_COPY_FILES += \
     frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes.xml \
     frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
@@ -61,14 +79,24 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0 \
     libbt-vendor
 
-# Boot animation
+# Boot Animation
 TARGET_SCREEN_HEIGHT := 2560
 TARGET_SCREEN_WIDTH := 1440
 
-# Boot control HAL
+# Boot Control
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
+    android.hardware.boot@1.0-service \
+    bootctrl.qcom
+
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl
+
+PRODUCT_STATIC_BOOT_CONTROL_HAL := \
+    bootctrl.qcom \
+    libcutils \
+    libgptutils \
+    libz
 
 # Camera
 PRODUCT_COPY_FILES += \
@@ -125,10 +153,9 @@ PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1
 
 PRODUCT_COPY_FILES += \
-    device/motorola/nash/keylayout/uinput-fpc.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-fpc.kl \
     device/motorola/nash/idc/uinput-fpc.idc:$(TARGET_COPY_OUT_VENDOR)/usr/idc/uinput-fpc.idc
 
-# Gatekeeper HAL
+# Gatekeeper
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
     android.hardware.gatekeeper@1.0-service
@@ -141,6 +168,7 @@ PRODUCT_PACKAGES += \
     libgnsspps \
     libvehiclenetwork-native
 
+# GPS Configurations
 PRODUCT_PACKAGES += \
     apdr.conf \
     flp.conf \
@@ -172,26 +200,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     ims-ext-common
 
-PRODUCT_PACKAGES += \
-    fstab.qcom \
-    init.mmi.laser.sh \
-    init.mmi.ramdump.rc \
-    init.mmi.usb.rc \
-    init.mmi.usb.sh \
-    init.qcom.rc \
-    init.nash.rc \
-    init.power.rc \
-    init.qcom.early_boot.sh \
-    init.qcom.power.sh \
-    init.qcom.post_boot.sh \
-    init.qcom.sensors.sh \
-    init.qcom.sh \
-    init.gbmods.sh \
-    init.qti.qseecomd.sh \
-    ueventd.qcom.rc \
-    move_time_data.sh \
-    wlan_carrier_bin.sh
-
 # IPACM
 PRODUCT_PACKAGES += \
     ipacm \
@@ -214,14 +222,15 @@ PRODUCT_COPY_FILES += \
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
+    device/motorola/nash/keylayout/uinput-fpc.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-fpc.kl \
     device/motorola/nash/keylayout/Vendor_22b8_Product_ffff.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/Vendor_22b8_Product_ffff.kl
 
-# Keymaster HAL
+# Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl \
     android.hardware.keymaster@3.0-service
 
-# LED packages
+# LED
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.nash
 
@@ -305,11 +314,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/com.nxp.mifare.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/com.nxp.mifare.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml
 
-# QCOM
-PRODUCT_COPY_FILES += \
-    device/motorola/nash/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml \
-    device/motorola/nash/configs/qti_whitelist.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/qti_whitelist.xml
-
 # OMX
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
@@ -323,12 +327,21 @@ PRODUCT_PACKAGES += \
     libOmxVenc \
     libstagefrighthw
 
+# OPA
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    ro.opa.eligible_device=true
+
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.2-service.nash-libperfmgr
 
 PRODUCT_COPY_FILES += \
     device/motorola/nash/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
+
+# QCOM
+PRODUCT_COPY_FILES += \
+    device/motorola/nash/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/privapp-permissions-qti.xml \
+    device/motorola/nash/configs/qti_whitelist.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/qti_whitelist.xml
 
 # QMI
 PRODUCT_PACKAGES += \
@@ -338,6 +351,27 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     librmnetctl \
     libprotobuf-cpp-full
+
+# Ramdisk
+PRODUCT_PACKAGES += \
+    fstab.qcom \
+    init.mmi.laser.sh \
+    init.mmi.ramdump.rc \
+    init.mmi.usb.rc \
+    init.mmi.usb.sh \
+    init.qcom.rc \
+    init.nash.rc \
+    init.power.rc \
+    init.qcom.early_boot.sh \
+    init.qcom.power.sh \
+    init.qcom.post_boot.sh \
+    init.qcom.sensors.sh \
+    init.qcom.sh \
+    init.gbmods.sh \
+    init.qti.qseecomd.sh \
+    ueventd.qcom.rc \
+    move_time_data.sh \
+    wlan_carrier_bin.sh
 
 # RCS
 PRODUCT_PACKAGES += \
@@ -361,13 +395,13 @@ PRODUCT_COPY_FILES += \
     device/motorola/nash/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
 # Sensors
-PRODUCT_COPY_FILES += \
-    device/motorola/nash/configs/sensors/sensor_def_qcomdev.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/sensor_def_qcomdev.conf \
-    device/motorola/nash/configs/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
-
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     android.hardware.sensors@1.0-service
+
+PRODUCT_COPY_FILES += \
+    device/motorola/nash/configs/sensors/sensor_def_qcomdev.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/sensor_def_qcomdev.conf \
+    device/motorola/nash/configs/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
 
 # Shims
 PRODUCT_PACKAGES += \
@@ -386,7 +420,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # TextClassifier
 PRODUCT_PACKAGES += \
-    textclassifier.smartselection.bundle1
+    textclassifier.bundle1
 
 # Thermal
 PRODUCT_PACKAGES += \
@@ -396,8 +430,23 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libtinyxml2
 
-# Update engine
-PRODUCT_PACKAGES += brillo_update_payload
+# TWRP
+ifeq ($(WITH_TWRP),true)
+$(call inherit-product, device/motorola/nash/twrp/twrp.mk)
+else
+TARGET_RECOVERY_FSTAB := device/motorola/nash/rootdir/etc/fstab.qcom
+endif
+
+# Update Engine
+PRODUCT_PACKAGES += \
+    brillo_update_payload \
+    otapreopt_script \
+    update_engine \
+    update_engine_sideload \
+    update_verifier
+
+PRODUCT_PACKAGES_DEBUG += \
+    update_engine_client
 
 # USB
 PRODUCT_PACKAGES += \
@@ -415,13 +464,9 @@ PRODUCT_PACKAGES += \
 
 # VR
 PRODUCT_PACKAGES += \
-    vr.msm8998 \
     android.hardware.vr@1.0-impl \
-    android.hardware.vr@1.0-service
-
-# Voice assistant
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.opa.eligible_device=true
+    android.hardware.vr@1.0-service \
+    vr.msm8998
 
 # VNDK
 # Update this list with what each blob is actually for
