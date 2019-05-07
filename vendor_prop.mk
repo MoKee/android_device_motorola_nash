@@ -55,7 +55,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
-    vendor.camera.aux.packagelist="org.codeaurora.snapcam,com.motorola.camera2,com.motorola.motocit,org.mokee.snap" \
     persist.camera.camera2=true \
     persist.camera.expose.aux=1 \
     persist.camera.is_type=3 \
@@ -134,6 +133,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.dpm.feature=0 \
     persist.vendor.data.mode=concurrent \
     persist.data.netmgrd.qos.enable=true \
+    persist.radio.aosp_usr_pref_sel=true \
     persist.radio.VT_CAM_INTERFACE=2 \
     persist.radio.VT_ENABLE=1 \
     persist.radio.VT_HYBRID_ENABLE=1 \
