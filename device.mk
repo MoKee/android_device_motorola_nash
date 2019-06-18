@@ -55,6 +55,7 @@ PRODUCT_PACKAGES += \
     audio.primary.msm8998 \
     audio.r_submix.default \
     audio.usb.default \
+    libaacwrapper \
     libaudio-resampler \
     libqcompostprocbundle \
     libqcomvisualizer \
@@ -162,8 +163,8 @@ PRODUCT_PACKAGES += \
 
 # GPS
 PRODUCT_PACKAGES += \
-    android.hardware.gnss@1.1-impl-qti \
-    android.hardware.gnss@1.1-service-qti \
+    android.hardware.gnss@1.0-impl-qti \
+    android.hardware.gnss@1.0-service-qti \
     libgnss \
     libgnsspps \
     libvehiclenetwork-native
@@ -494,6 +495,7 @@ PRODUCT_PACKAGES += \
     hostapd \
     hostapd_cli \
     libnl_2 \
+    libnl \
     libqsap_sdk \
     libQWiFiSoftApCfg \
     libwifi-hal-qcom \
@@ -503,3 +505,7 @@ PRODUCT_PACKAGES += \
     wpa_supplicant \
     wpa_supplicant.conf \
     wpa_supplicant_wcn.conf
+
+# Wi-Fi Display
+PRODUCT_BOOT_JARS += \
+    WfdCommon
