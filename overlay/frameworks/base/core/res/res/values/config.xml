@@ -56,6 +56,10 @@
     <!-- Is the notification LED intrusive? Used to decide if there should be a disable option -->
     <bool name="config_intrusiveNotificationLed">true</bool>
 
+    <!-- Whether device needs to wait for Qualcomm MPCTL service to start
+         before setting power profiles on boot. -->
+    <bool name="config_waitForMpctlOnBoot">true</bool>
+
     <!-- Array of light sensor LUX values to define our levels for auto backlight brightness support.
          The N entries of this array define N  1 zones as follows:
 
@@ -212,7 +216,7 @@
     <bool name="config_displayBlanksAfterDoze">true</bool>
 
     <!-- Doze: should the TYPE_PICK_UP_GESTURE sensor be used as a pulse signal. -->
-    <bool name="config_dozePulsePickup">true</bool>
+    <bool name="config_dozePulsePickup">false</bool>
 
     <!-- Specifies whether to decouple the interactive state of the device from the display on/off state. -->
     <bool name="config_powerDecoupleInteractiveModeFromDisplay">true</bool>
@@ -272,16 +276,18 @@
          If no value is found for the rat-name in use, the system default will be applied.
     -->
     <string-array name="config_mobile_tcp_buffers">
-        <item>lte:2097152,4194304,8388608,262144,524288,1048576</item>
-        <item>lte_ca:2097152,4194304,8388608,4096,1048576,2097152</item>
-        <item>umts:4094,87380,1220608,4096,16384,1220608</item>
-        <item>hspa:4094,87380,1220608,4096,16384,1220608</item>
-        <item>hsupa:4094,87380,1220608,4096,16384,1220608</item>
-        <item>hsdpa:4094,87380,1220608,4096,16384,1220608</item>
-        <item>hspap:4094,87380,1220608,4096,16384,1220608</item>
-        <item>edge:4093,26280,35040,4096,16384,35040</item>
-        <item>gprs:4092,8760,11680,4096,8760,11680</item>
-        <item>evdo:4094,87380,524288,4096,16384,262144</item>
+        <item>5gnr:2097152,6291456,16777216,512000,2097152,8388608</item>
+        <item>lte:524288,1048576,8388608,262144,524288,4194304</item>
+        <item>lte_ca:1048576,2097152,16777216,524288,1048576,8388608</item>
+        <item>umts:131072,262144,1452032,4096,16384,399360</item>
+        <item>hspa:131072,262144,1452032,4096,16384,399360</item>
+        <item>hsupa:131072,262144,1452032,4096,16384,399360</item>
+        <item>hsdpa:131072,262144,1452032,4096,16384,399360</item>
+        <item>hspap:131072,262144,1452032,4096,16384,399360</item>
+        <item>edge:16384,32768,131072,4096,16384,65536</item>
+        <item>gprs:4096,8192,24576,4096,8192,24576</item>
+        <item>evdo:131072,262144,1048576,4096,16384,524288</item>
+        <item>ehrpd:4094,87380,1048576,4096,16384,262144</item>
     </string-array>
 
     <!-- This string array should be overridden by the device to present a list of radio
@@ -350,6 +356,25 @@
         <item>"/system/framework/boot.vdex"</item>
         <item>"/system/framework/arm64/boot-core-libart.oat"</item>
         <item>"/system/framework/boot-core-libart.vdex"</item>
+    </string-array>
+
+    <!-- Values for USB port setting. in format of bootmode:current function:new function -->
+    <string-array translatable="false" name="config_oemUsbModeOverride">
+        <item>"bp-tools:mtp:diag,serial,rmnet:mtp"</item>
+        <item>"bp-tools:mtp,adb:diag,serial,rmnet,adb:mtp,adb"</item>
+        <item>"bp-tools:adb:diag,serial,rmnet,adb:adb"</item>
+        <item>"bp-tools:ptp:diag,serial,rmnet:ptp"</item>
+        <item>"bp-tools:ptp,adb:diag,serial,rmnet,adb:ptp,adb"</item>
+        <item>"bp-tools:rndis:rndis,diag,serial:mtp"</item>
+        <item>"bp-tools:rndis,adb:rndis,diag,serial,adb:mtp,adb"</item>
+        <item>"qcom:mtp:diag,serial_cdev,rmnet:mtp"</item>
+        <item>"qcom:mtp,adb:diag,serial_cdev,rmnet,adb:mtp,adb"</item>
+        <item>"qcom:ptp:diag,serial_cdev,rmnet:ptp"</item>
+        <item>"qcom:ptp,adb:diag,serial_cdev,rmnet,adb:ptp,adb"</item>
+        <item>"qcom:adb:diag,serial_cdev,rmnet,adb:adb"</item>
+        <item>"mot-factory:mtp:usbnet:mtp"</item>
+        <item>"mot-factory:mtp,adb:usbnet,adb:mtp,adb"</item>
+        <item>"mot-factory:adb:usbnet,adb:adb"</item>
     </string-array>
 
     <!-- True if camera app should be pinned via Pinner Service -->
