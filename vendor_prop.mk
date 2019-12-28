@@ -55,10 +55,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.vendor.camera.camera2=true \
     persist.vendor.camera.expose.aux=1 \
-    persist.vendor.camera.is_type=3 \
-    persist.vendor.camera.max.previewfps=60 \
     vidc.enc.dcvs.extra-buff-count=2
 
 # Color Mode
@@ -106,6 +103,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Radio
 PRODUCT_PROPERTY_OVERRIDES += \
+    persist.dbg.volte_avail_ovr=1 \
+    persist.dbg.vt_avail_ovr=1 \
+    persist.dbg.wfc_avail_ovr=1 \
     persist.vendor.radio.no_wait_for_card=1 \
     persist.vendor.radio.dfr_mode_set=1 \
     persist.vendor.radio.relay_oprt_change=1 \
@@ -134,6 +134,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.data.mode=concurrent \
     persist.data.netmgrd.qos.enable=true \
     persist.radio.aosp_usr_pref_sel=true \
+    persist.radio.pb.min.match=7 \
     persist.radio.VT_CAM_INTERFACE=2 \
     persist.radio.VT_ENABLE=1 \
     persist.radio.VT_HYBRID_ENABLE=1 \
@@ -165,7 +166,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.qc.sub.rdump.max=3 \
     ro.telephony.call_ring.multiple=false \
     DEVICE_PROVISIONED=1 \
-    ro.telephony.default_network=10,0 \
+    ro.telephony.default_network=10,10 \
+    ro.vendor.telephony.default_network=10,10 \
     ro.vendor.use_data_netmgrd=true \
     telephony.lteOnCdmaDevice=1 \
     persist.vendor.ims.dropset_feature=0 \
