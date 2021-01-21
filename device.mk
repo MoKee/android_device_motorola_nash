@@ -247,10 +247,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.nash
 
-# MoKeeActions
-PRODUCT_PACKAGES += \
-    MoKeeActions
-
 # MoKee hardware
 PRODUCT_PACKAGES += \
     vendor.mokee.touch@1.0-service.nash
@@ -273,13 +269,17 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/whitelist_modservice.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/whitelist_modservice.xml
 
+# MotoActions
+PRODUCT_PACKAGES += \
+    MotoActions
+
 # Network
 PRODUCT_PACKAGES += \
     netutils-wrapper-1.0
 
 # NFC
 PRODUCT_PACKAGES += \
-    android.hardware.nfc@1.1-service \
+    android.hardware.nfc@1.2-service \
     com.android.nfc_extras \
     SecureElement \
     NfcNci \
@@ -352,6 +352,10 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/telephony_product_privapp-permissions-qti.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/telephony_product_privapp-permissions-qti.xml \
     $(LOCAL_PATH)/configs/privapp-permissions-qti.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-qti.xml
+
+# PocketMode
+PRODUCT_PACKAGES += \
+    MotoPocketMode
 
 # Power
 PRODUCT_PACKAGES += \
