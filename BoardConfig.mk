@@ -103,7 +103,7 @@ BOARD_KERNEL_CMDLINE += androidboot.veritymode=eio
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE := 4096
 TARGET_KERNEL_CLANG_COMPILE := true
-TARGET_KERNEL_CONFIG := lineageos_nash_defconfig
+TARGET_KERNEL_CONFIG := mokee_nash_defconfig
 TARGET_KERNEL_SOURCE := kernel/motorola/msm8998
 
 # Kernel additional flags
